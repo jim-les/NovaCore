@@ -41,15 +41,14 @@ const changeBorderColor = keyframes`
 `;
 
 const Card = styled.div`
-    background-color: #fff;
-    // padding: 1rem;
+    background-color: rgba(10, 10, 40, 1);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     cursor: pointer;
     min-height: 400px;
-    border: 2px solid aqua; /* Initial border color */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid aqua;
+    box-shadow: 0 0 10px aqua;
 
     &:hover {
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -63,11 +62,11 @@ const CardBody = styled.div`
 
 const CardFooter = styled.div`
     padding: 1rem;
-    background-color: #f9f9f9;
+    background-color: rgba(10, 10, 40, 1);
     border-top: 1px solid #eee;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    color: #666;
+    color: #fff;
 `;
 
 
@@ -81,13 +80,13 @@ const Image = styled.img`
 
 const CardTitle = styled.h2`
     font-size: 1.5rem;
-    color: darkblue;
+    color: aqua;
     margin-bottom: 1rem;
 `;
 
 const CardDescription = styled.p`
     font-size: 1rem;
-    color: #666;
+    color: rgba(255, 255, 255, .9);
     margin-bottom: 1rem;
 `;
 

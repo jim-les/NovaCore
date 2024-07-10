@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaBars } from 'react-icons/fa'; // You can use any icon library
+import { FaBars } from 'react-icons/fa'; // You can use any icon 
+import { Link, useNavigate } from 'react-router-dom';
 
 const TopBar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
+
+    const handleNavigate= () => {
+        navigate('/profile');
+    }
 
     return (
         <Container>
@@ -19,7 +25,9 @@ const TopBar = () => {
                 <DropdownMenu>
                     <MenuItem>Home</MenuItem>
                     <MenuItem>Challanges</MenuItem>
-                    <MenuItem>My Profile</MenuItem>
+                    <MenuItem onClick={handleNavigate}>
+                        My profile
+                    </MenuItem>
                 </DropdownMenu>
             )}
         </Container>
@@ -57,6 +65,7 @@ const DropdownMenu = styled.div`
     background-color: #444;
     border-radius: 5px;
     padding: 10px;
+    z-index: 1000;
 `;
 
 const MenuItem = styled.div`

@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // pages imports
 import IntroPage from '../Pages/IntroPage';
 import Homepage from '../Pages/Homepage';
+import Profile from '../Pages/Profile';
+
 
 const MainNavigation = () => {
     return (
