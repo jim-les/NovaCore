@@ -1,12 +1,19 @@
 import React from 'react';
 import ParticlesComponent from '../components/ParticlesComponent';
 import styled from 'styled-components';
+import TopBar from '../components/TopBar';
+import profilePic from '../assets/hacker.png';
 
 const Profile = () => {
     return (
-        <div>
-            <h1>Hello</h1>
-        </div>
+        <ProfileContainer>
+            <ParticlesComponent />
+            <TopBar />
+
+            <ProfilePicContainer>
+                <ProfilePic src={profilePic} alt="Profile Picture" />
+            </ProfilePicContainer>
+        </ProfileContainer>
     )
 }
 
@@ -24,6 +31,21 @@ const ParticlesContainer = styled.div`
     width: 100%;
     height: 100%;
     z-index: 0;
+`;
+
+const ProfilePicContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh;
+    position: relative;
+`;
+
+const ProfilePic = styled.img`
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
 `;
 
 

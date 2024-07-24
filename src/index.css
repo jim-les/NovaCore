@@ -65,3 +65,58 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.drop{
+  position: relative;
+  height: 350px; 
+  width: 350px;
+  box-shadow: inset 20px 20px 20px rgba(214, 210, 210, 0.05),
+  25px 35px 20px rgba(214, 210, 210, 0.05),
+  25px 30px 30px rgba(214, 210, 210, 0.05),
+  inset -20px -20px 25px rgba(255, 255, 255, 0.9);
+  transition: 0.5s ease-in-out;
+  animation: 5s bubbleChange linear infinite alternate-reverse;
+  border-radius: 57% 43% 43% 57% / 43% 43% 57% 57%;
+  overflow: hidden;
+  z-index: 100;
+}
+
+
+@keyframes bubbleChange {
+  0% {
+      border-radius: 57% 43% 43% 57% / 43% 43% 57% 57%;
+      transform: scale(0.9);
+  }
+  50%{
+      border-radius: 23% 43% 57% 57% / 57% 43% 43% 57% 
+  }
+  100% {
+      border-radius: 57% 43% 43% 57% / 43% 43% 57% 57%;
+
+  }
+}
+
+.drop::after{
+  content: '';
+  position: absolute;
+  top: 50px;
+  left: 85px;
+  width: 25px;
+  height: 25px;
+  box-shadow: 0px 0px 3px 3px #c8f1f2;
+  border-radius: 50%;
+  transition: 0.5s ease-in-out;
+  opacity: 0.9;
+}
+
+
+.drop img{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 40px;
+  gap: 15px;
+}

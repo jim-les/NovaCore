@@ -2,30 +2,37 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import hackerthon from '../assets/hackerthon.png';
 
-const ChallangeCard = () => {
+const ChallangeCard = ({ event }) => {
+    // Default values for missing data
+    const title = event?.title || 'Untitled Event';
+    const shortDescription = event?.short_description || 'No description available';
+    const creatorName = event?.users?.full_name || 'Unknown Creator';
+    const creationDate = event?.start_time || 'Date not available';
+
     return (
         <Card>
-            <Image src={hackerthon} alt="hackerthon" />
-
+            <Image src={event.image} alt="hackerthon" />
             <CardBody>
                 <CardTitle>
-                    Web Development Challange
+                    {title}
                 </CardTitle>
                 <CardDescription>
-                    Join this challenge to learn and grow your skills. This challenge is for beginners and intermediate developers.
+                    {shortDescription}
                 </CardDescription>
                 <div className="flex justify-between">
-                    <CardButtonSave>Save to Bucket</CardButtonSave>
+                    <CardButtonSave>
+                        0 Paticipants
+                    </CardButtonSave>
                     <CardButtonJoin>Join Challenge</CardButtonJoin>
                 </div>
             </CardBody>
 
             <CardFooter>
-                <p>Created by: <span>Jimleston</span></p>
-                <p>Created on: <span>7th July 2024</span></p>
+                <p>Created by: <span>Internet Computer</span></p>
+                <p>Created on: <span>{creationDate}</span></p>
             </CardFooter>
         </Card>
-    )
+    );
 }
 
 const changeBorderColor = keyframes`
@@ -47,6 +54,7 @@ const Card = styled.div`
     transition: all 0.3s ease;
     cursor: pointer;
     min-height: 400px;
+    max-width: 380px;
     border: 2px solid aqua;
     box-shadow: 0 0 10px aqua;
 
@@ -69,7 +77,6 @@ const CardFooter = styled.div`
     color: #fff;
 `;
 
-
 const Image = styled.img`
     width: 100%;
     height: 200px;
@@ -86,17 +93,20 @@ const CardTitle = styled.h2`
 
 const CardDescription = styled.p`
     font-size: 1rem;
-    color: rgba(255, 255, 255, .9);
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 1rem;
 `;
 
 const CardButtonSave = styled.button`
     background-color: var(--primary-color);
-    color: rgba(0, 0, 0, .6);
+    color: rgba(0, 0, 0, 0.6);
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 30px;
     cursor: pointer;
+    &:hover {
+        background-color: var(--primary-color-dark);
+    }
 `;
 
 const CardButtonJoin = styled.button`
@@ -106,6 +116,9 @@ const CardButtonJoin = styled.button`
     border: none;
     border-radius: 30px;
     cursor: pointer;
+    &:hover {
+        background-color: #2980b9;
+    }
 `;
 
 export default ChallangeCard;

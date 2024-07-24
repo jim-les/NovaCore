@@ -1,124 +1,124 @@
-import React from 'react';
-import styled from 'styled-components';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
+import React, { useState } from 'react';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { useNavigation } from '@react-navigation/native';
+import { BASE_URL } from '../config/base';
+
+// images 
+const chartbot = require('../assets/chatbot.png');
 
 // components
-import TopBar from '../components/TopBar';
-import ParticlesComponent from '../components/ParticlesComponent';
-import ImageGallery from '../components/ImageGallery ';
-import ChallangeCard from '../components/ChallangeCard';
+import Topbar from '../components/Topbar';
+import ChartBotWidget from '../components/ChartBotWidget';
+import ChartuserWidget from '../components/ChartuserWidget';
+import ChartInputWidget from '../components/ChartInputWidget';
 
-// image
-import hacker from '../assets/hacker.png';
+const ChartScreen = () => {
+    const navigation = useNavigation();
+    const [isEmpty, setIsEmpty] = useState(true);
+    const [charts, setCharts] = useState<any>([]);
 
-const Homepage = () => {
+    const [toggleDrawer, setToggleDrawer] = useState(false);
+
+    const addChartMessage = async (message: string) => {
+        setIsEmpty(false);
+        const newMessage = {
+            id: Date.now().toString(),  // Using timestamp as a unique ID
+            threadTitle: 'New Chat',
+            user: 'user',
+            request: message,
+            time: new Date().toLocaleTimeString(),
+        };
+
+        setCharts((prevCharts: any) => [...prevCharts, newMessage]);
+        try {
+            const response = await fetch(BASE_URL + '/chat-with-gemini', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "modelType": "text_only",
+                    "prompt": message // Use the message parameter here
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            const botMessage = {
+                id: Date.now().toString() + "b",  // Using timestamp as a unique ID
+                threadTitle: 'New Chat',
+                user: 'chatbot',
+                reply: data.result, // Adjust according to the API response
+                time: new Date().toLocaleTimeString(),
+            };
+            setCharts((prevCharts: any) => [...prevCharts, botMessage]);
+
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Error', 'An error occurred while sending message');
+        }
+    };
+
     return (
-        <PageContainer>
-            <ParticlesContainer>
-                <ParticlesComponent /> 
-            </ParticlesContainer>
-            <TopBar />
+        <View style={styles.container}>
+            {/* topbar */}
+            <Topbar setToggleDrawer={setToggleDrawer} toggleDrawer={toggleDrawer} />
 
-            {/* intro */}
-            <ContentContainer className="h-screen flex flex-col justify-center items-center">
-                <TextContainer className="text-center">
-                    <Title className="text-5xl">Welcome to NovaCore</Title>
-                    <Subtitle className="text-xl">A place to learn and grow</Subtitle>
-                </TextContainer>
-                <Image src={hacker} alt="hacker" />
-            </ContentContainer>
+            {/* drawer */}
+            {toggleDrawer && (
+                <View style={styles.drawer}>
+                    <View style={{ alignItems: 'center', padding: 20, borderBottomColor: Colors.dark, borderWidth: .3 }}>
+                        <Text style={styles.drawTitle}> Chart History </Text>
+                    </View>
 
-            
-            {/* zindex 1 */}
-            <h4 className="text-5xl relative text-center mb-20">Frameworks <br /> & <br /> Languages</h4>
-            <div className="flex justify-center py-20">
-                <ImageGallery />
-            </div>
+                    <View style={{ padding: 20, alignItems: 'center' }}>
+                        <Text style={{ color: Colors.dark }}>No chart History </Text>
+                    </View>
+                </View>
+            )}
 
-            {/* challanges */}
-            <div className="mt-20 relative px-5">
-                <h4 className="text-5xl relative text-center mb-9 pb-6">Challanges</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center items-center">
-                    <ChallangeCard />
-                </div>
-            </div>
+            {isEmpty ? (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Image source={chartbot} style={{ width: 100, height: 100 }} />
+                    <Text style={{ color: Colors.light }}>Hello there, I am mchart. Let's chat...</Text>
+                </View>
+            ) : (
+                <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, padding: 20 }}>
+                    {charts.map((item: { user: any; id: any; threadTitle?: string; reply?: string; time?: string; }) => (
+                        item.user === 'user' ?
+                            <ChartuserWidget key={item.id} item={item} /> : <ChartBotWidget key={item.id} item={item} />
+                    ))}
+                </ScrollView>
+            )}
 
-
-            {/* developer */}
-            <div className="mt-20 relative px-5">
-                <h4 className="text-5xl relative text-center mb-9 pb-6">Developers</h4>
-                <div className="flex justify-center">
-                    <img src={"https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-dsc/avatars/jimleston_osoi.jpg"} alt="developer" className="rounded-full" 
-                        style={{width: "250px", height: "250px", border: "5px solid #ffffff"}}
-                    />
-                </div>
-
-                <div className="mt-5">
-                    <p className="text-center text-xl">jimleston osoi</p>
-                    <p className="text-center text-lg">Software Developer</p>
-                </div>
-
-                {/* socials flex */}
-                <div className="flex justify-center mt-5">
-                    {/* whatsapp, github, linkedin, email */}
-                    <div className="flex justify-center items-center">
-                        <i className="fab fa-whatsapp fa-2x mr-10"></i>
-                        <i className="fab fa-github fa-2x mr-10"></i>
-                        <i className="fab fa-linkedin fa-2x mr-10"></i>
-                        <i className="fas fa-envelope fa-2x"></i>
-                    </div>
-                </div>
-            </div>
-
-            {/* footer */}
-            <div className="border-b-2 border-gray-500 w-100 relative mt-20 mx-auto"></div>
-            <div className="text-center py-10 relative">
-                {/* devider */}
-                <p className='text-xl'>NovaCore &copy; 2021</p>
-            </div>
-        </PageContainer>
+            <ChartInputWidget onSend={addChartMessage} />
+        </View>
     );
 };
 
-// dark background with gradient
-const PageContainer = styled.div`
-    min-height: 100vh;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: #ffffff;
-    overflow-x: hidden;
-`;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.dark,
+    },
+    drawer: {
+        position: 'absolute',
+        backgroundColor: Colors.lighter,
+        width: 300,
+        height: '100%',
+        zIndex: 1000
+    },
+    drawTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: Colors.darker,
+        alignItems: 'center'
+    }
+});
 
-// Particles container with positioning
-const ParticlesContainer = styled.div`
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-`;
+export default ChartScreen;
 
-const ContentContainer = styled.div`
-    position: relative;
-    z-index: 1;
-`;
-
-const TextContainer = styled.div`
-    margin-bottom: 20px;
-`;
-
-const Title = styled.h1`
-    font-size: 4rem;
-    margin-bottom: 10px;
-    color: var(--primary-color);
-`;
-
-const Subtitle = styled.p`
-    font-size: 1.5rem;
-    color: #d3d3d3;
-`;
-
-const Image = styled.img`
-    width: 300px;
-    height: 300px;
-    margin-top: 20px;
-`;
-
-export default Homepage;

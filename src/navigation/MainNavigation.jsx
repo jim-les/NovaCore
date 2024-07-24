@@ -13,6 +13,7 @@ const MainNavigation = () => {
             <Routes>
                 <Route path="/" element={<IntroPage />} />
                 <Route path="/home" element={<Homepage />} />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
         </Router>
     )

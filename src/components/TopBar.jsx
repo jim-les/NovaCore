@@ -11,8 +11,8 @@ const TopBar = () => {
         setIsOpen(!isOpen);
     };
 
-    const handleNavigate= () => {
-        navigate('/profile');
+    const handleNavigate= ({page}) => {
+        navigate(page);
     }
 
     return (
@@ -23,9 +23,11 @@ const TopBar = () => {
             </MenuIcon>
             {isOpen && (
                 <DropdownMenu>
-                    <MenuItem>Home</MenuItem>
+                    <MenuItem onClick={() => handleNavigate({page: '/home'})}>
+                        Home
+                    </MenuItem>
                     <MenuItem>Challanges</MenuItem>
-                    <MenuItem onClick={handleNavigate}>
+                    <MenuItem onClick={() => handleNavigate({page: '/profile'})}>
                         My profile
                     </MenuItem>
                 </DropdownMenu>
